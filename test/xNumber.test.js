@@ -6,7 +6,7 @@ describe('test xNumber.numberAri2Chn', () => {
         expect(xNumber.tolerant("")).toBe("零");
         expect(xNumber.tolerant("十零")).toBe("十");
         expect(xNumber.tolerant("零十")).toBe("十");
-        expect(xNumber.tolerant("一千零零十")).toBe("一千零十");
+        expect(xNumber.tolerant("一千零零十")).toBe("一千零一十");
         expect(xNumber.tolerant("一百零零十")).toBe("一百一十");
     });
 
@@ -89,12 +89,13 @@ describe('test xNumber.numberAri2Chn', () => {
         expect(xNumber.numberChn2Ari("一千")).toBe(1000);
         expect(xNumber.numberChn2Ari("一千零一")).toBe(1001);
         expect(xNumber.numberChn2Ari("一千零一十")).toBe(1010);
+        expect(xNumber.numberChn2Ari("一千零十")).toBe(1010);
         expect(xNumber.numberChn2Ari("一千一百")).toBe(1100);
         expect(xNumber.numberChn2Ari("一千零一十一")).toBe(1011);
         expect(xNumber.numberChn2Ari("一万")).toBe(10000);
         expect(xNumber.numberChn2Ari("一万零一")).toBe(10001);
         expect(xNumber.numberChn2Ari("一万零一十")).toBe(10010);
-        expect(xNumber.numberChn2Ari("一万零一十")).toBe(10010);
+        expect(xNumber.numberChn2Ari("一万零十")).toBe(10010);
         expect(xNumber.numberChn2Ari("一万零一百")).toBe(10100);
         expect(xNumber.numberChn2Ari("一万一千零一十")).toBe(11010);
         expect(xNumber.numberChn2Ari("十万零一千零一十")).toBe(101010);
@@ -146,6 +147,11 @@ describe('test xNumber.numberAri2Chn', () => {
         expect(xNumber.isLegalChnNum("一千零一十亿零一万一千")).toBeTruthy();
         expect(xNumber.isLegalChnNum("一万亿零一万一千")).toBeTruthy();
         expect(xNumber.isLegalChnNum("一万万万")).toBeFalsy();
+        expect(xNumber.isLegalChnNum("abc")).toBeFalsy();
+        expect(xNumber.isLegalChnNum("1")).toBeFalsy();
+        expect(xNumber.isLegalChnNum("12")).toBeFalsy();
+        expect(xNumber.isLegalChnNum("12a")).toBeFalsy();
+
     });
     
 });
