@@ -1,13 +1,16 @@
 {
   "name": "xnumber.js",
-  "version": "1.0.1",
+  "version": "1.2.0",
   "description": "Transfer number format between chinese, roma and arabia.",
   "main": "index.js",
   "repository": "https://github.com/Tairraos/xNumber.js.git",
   "author": "xiaol.tao@gmail.com",
   "license": "MIT",
   "devDependencies": {
-    "jest": "^24.9.0"
+    "jest": "^24.9.0",
+    "y18n": ">=4.0.1",
+    "handlebars": ">=4.7.7",
+    "lodash": ">=4.17.21"
   },
   "jest": {
     "collectCoverage": true,
