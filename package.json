@@ -10,7 +10,8 @@
     "jest": "^24.9.0",
     "y18n": ">=4.0.1",
     "handlebars": ">=4.7.7",
-    "lodash": ">=4.17.21"
+    "lodash": ">=4.17.21",
+    "node-notifier": ">=8.0.1"
   },
   "jest": {
     "collectCoverage": true,
