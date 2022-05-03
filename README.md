@@ -1,4 +1,5 @@
 xTool.js包的子包，单独拿出来作中文文档，方便中文用户。
+需要跑UT请先安装Jest: `npm i jest'
 
 <a name="xNumber"></a>
 
