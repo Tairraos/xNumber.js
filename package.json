@@ -1,6 +1,6 @@
 {
   "name": "xnumber.js",
-  "version": "1.2.0",
+  "version": "1.2.1",
   "description": "Transfer number format between chinese, roma and arabia.",
   "main": "index.js",
   "repository": "https://github.com/Tairraos/xNumber.js.git",
