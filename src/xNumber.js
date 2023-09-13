@@ -1,7 +1,7 @@
 /**
  * Number relative tools of xTool
  */
- let xNumber = Object.assign(Function(), {
+let xNumber = Object.assign(Function(), {
     tolerantPattern: [
         "零+|^$,零,^零(.)|(.)零$,$1$2,^一十,十,百零?十,百一十,百([一二三四五六七八九])([^十]|$),百零$1$2,千([一二三四五六七八九])([^百]|$),千零$1$2",
         "(万|亿)([一二三四五六七八九])([^千]|$),$1零$2$3,([十百千])(万|亿)([^零万亿]),$1$2零$3,亿万,亿,([千万亿])零([万千百十]),$1零一$2"
@@ -17,8 +17,8 @@
     /**
      * 用字符串描述一堆正则pattern来刷洗字符串
      * "零,,一,1,^十,1十" 表示 replace(/零/g,"").replace(/一/g,"1")，replace(/^十/g,"1十")
-     * @param {string} data 
-     * @param {string} pattern 
+     * @param {string} data
+     * @param {string} pattern
      * @return {string}
      * @private
      */
@@ -62,11 +62,14 @@
      * @return {string} 返回中文数字
      */
     numberAri2Chn(num) {
-        let t = ("0000" + num).replace(/.{0,4}((.{4})+)$/, "$1").match(/.{4}/g).map((x) => {
-            x = x.split("").map((y) => xNumber._washData(y, xNumber.toChnNumPattern));
-            return [x[0] ? x[0] + "千" : "零", x[1] ? x[1] + "百" : "零", x[2] ? x[2] + "十" : "零", x[3]].join("").replace(/零+$/, "");
-        });
-        return xNumber.tolerant(t.reduceRight((x, y, i) => y + ("万亿万亿万")[t.length - i - 2] + x));
+        let t = ("0000" + num)
+            .replace(/.{0,4}((.{4})+)$/, "$1")
+            .match(/.{4}/g)
+            .map((x) => {
+                x = x.split("").map((y) => xNumber._washData(y, xNumber.toChnNumPattern));
+                return [x[0] ? x[0] + "千" : "零", x[1] ? x[1] + "百" : "零", x[2] ? x[2] + "十" : "零", x[3]].join("").replace(/零+$/, "");
+            });
+        return xNumber.tolerant(t.reduceRight((x, y, i) => y + "万亿万亿万"[t.length - i - 2] + x));
     },
 
     /**
@@ -81,10 +84,15 @@
         if (xNumber.isLegalChnNum(num)) {
             num = xNumber._washData(xNumber.tolerant(num), xNumber.toAriNumPattern);
             let secList = num.match(RegExp(/亿/.test(num) ? xNumber.matchChnNumPattern : xNumber.matchChnNumSimplePattern)).slice(1);
-            secList = secList.map((i) => i ? i : "0").map((sec) => {
-                sec = sec.match(RegExp(xNumber.matchChnNumSectionPattern));
-                return sec.slice(1).map((i) => i ? +i : 0).reduceRight((x, y, i) => x + y * Math.pow(10, 3 - i));
-            });
+            secList = secList
+                .map((i) => (i ? i : "0"))
+                .map((sec) => {
+                    sec = sec.match(RegExp(xNumber.matchChnNumSectionPattern));
+                    return sec
+                        .slice(1)
+                        .map((i) => (i ? +i : 0))
+                        .reduceRight((x, y, i) => x + y * Math.pow(10, 3 - i));
+                });
             return secList.map((i) => +i).reduceRight((x, y, i) => x + y * Math.pow(10000, secList.length - i - 1));
         }
         return -1;
@@ -99,8 +107,14 @@
         if (String(num).match(/[\d\w]/)) return false;
         num = xNumber._washData(xNumber.tolerant(num), xNumber.toAriNumPattern); //replace 一二三四 to  1,2,3,4
         let secs = num.match(RegExp(xNumber.matchChnNumPattern));
-        return secs && secs.slice(1).map((i) => i ? i : "0")
-            .map((item) => !!item.match(RegExp(xNumber.matchChnNumSectionPattern))).reduce((x, y) => x && y);
+        return (
+            secs &&
+            secs
+                .slice(1)
+                .map((i) => (i ? i : "0"))
+                .map((item) => !!item.match(RegExp(xNumber.matchChnNumSectionPattern)))
+                .reduce((x, y) => x && y)
+        );
     },
 
     /**
@@ -117,7 +131,11 @@
         ];
 
         //凑满4位数, 拆成数组，每个数字转成字典里对应的罗马数字，再转回字串
-        return ("000" + num).replace(/.*(....)$/, "$1").split("").map((n, i) => dict[i][+n]).join("");
+        return ("000" + num)
+            .replace(/.*(....)$/, "$1")
+            .split("")
+            .map((n, i) => dict[i][+n])
+            .join("");
     },
 
     /**
@@ -128,17 +146,34 @@
     numberRoman2Ari(s) {
         //权重字典
         let d = {
-            "M": 1000,
-            "D": 500,
-            "C": 100,
-            "L": 50,
-            "X": 10,
-            "V": 5,
-            "I": 1
+            M: 1000,
+            D: 500,
+            C: 100,
+            L: 50,
+            X: 10,
+            V: 5,
+            I: 1
         };
         return [0, ...s.split("")].reduce((a, b, i, s) => a + (d[b] < d[s[i + 1]] ? -d[b] : d[b]));
-    }
+    },
 
+    /**
+     * 格式化成阿拉伯数字
+     * @param {string|num} num - 中文或数字形式的数字
+     * @return {number}
+     */
+    getAriNum(num) {
+        return xNumber.isLegalChnNum(num) ? xNumber.numberChn2Ari(num) : +num;
+    },
+
+    /**
+     * 格式化成中文数字
+     * @param {string|num} num - 中文或数字形式的数字
+     * @return {string}
+     */
+    getChnNum(num) {
+        return xNumber.numberAri2Chn(xNumber.getAriNum(num));
+    }
 });
 
 module.exports = xNumber;
