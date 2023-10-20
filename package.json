@@ -6,6 +6,9 @@
   "repository": "https://github.com/Tairraos/xNumber.js.git",
   "author": "xiaol.tao@gmail.com",
   "license": "MIT",
+  "dependencies": {
+    
+  },
   "devDependencies": {
   },
   "jest": {
